@@ -175,3 +175,17 @@
     margin-bottom: 4px;
     cursor: pointer;
 }
+
+@media screen and (max-width:420px){
+    .search{
+        width: 100%;
+    }
+    #search_input{
+        width: 80%;
+        margin: 0 auto;
+        display: block;
+    }
+    .dropdown{
+        width: 100%;
+    }
+}
