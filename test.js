@@ -93,6 +93,7 @@ save.addEventListener('click', () => {
     addItems.style.height = '0';
 
     // renderItemsCard()
+    drawOption()
 
     localStorage.setItem('appdata', JSON.stringify(ArrayObj))
 
@@ -140,13 +141,14 @@ search_input.addEventListener('keyup', (e) => {
     console.log('input val', e.target.value)
     ArrayObj.forEach((ele, id2) => {
         ele.userItems.forEach((item) => {
-            if (e.target.value.includes(item.uItems)) {
+            // if (e.target.value.includes(item.uItems)) {
+            if (item.uItems.includes(e.target.value) || ele.containerN[0].includes(e.target.value)  && e.target.value !== '') {
 
                 console.log('draw name', ele.containerN[0])
                 console.log('item.uItems', item.uItems)
 
                 serach_drwa = `
-            <div class="containersInfo" data-cninf="${id2}"  >
+             <div class="containersInfo" data-cninf="${id2}"  >
               <h2>Draw ${ele.containerN[0]}</h2>
               <ul class="items_render">
                 <li>${item.uItems}</li>
@@ -155,10 +157,10 @@ search_input.addEventListener('keyup', (e) => {
               <ul class="allItem_render">
             
               </ul>
-           </div>
-            `
+                  </div>
+               `
 
-            
+
             }
 
         })
@@ -177,9 +179,9 @@ search_input.addEventListener('keyup', (e) => {
             ele.userItems.forEach((item) => {
                 if (ele.id == containersInfo.dataset.cninf) {
 
-                    htmlStr_allItem += `<li>${item.uItems}</li>` 
+                    htmlStr_allItem += `<li>${item.uItems}</li>`
 
-                   
+
 
 
                 }
@@ -187,9 +189,9 @@ search_input.addEventListener('keyup', (e) => {
             })
         })
 
-        allItem_render.innerHTML  = htmlStr_allItem;
+        allItem_render.innerHTML = htmlStr_allItem;
 
-    })  
+    })
 
 
 
@@ -203,62 +205,69 @@ search_input.addEventListener('keyup', (e) => {
 const yourDraw__row = document.querySelector('.yourDraw__row');
 const yourDraw__row1 = document.querySelector('.yourDraw__row1');
 
-yourDraw__row.addEventListener('click' , ()=>{
+yourDraw__row.addEventListener('click', () => {
 
     yourDraw__row.classList.toggle('open');
 
-    if(yourDraw__row.classList.contains('open')){
+    if (yourDraw__row.classList.contains('open')) {
         yourDraw__row1.style.height = (yourDraw__row1.scrollHeight) + 'px';
-    }else{
+    } else {
         yourDraw__row1.style.height = 0;
     }
 })
 
-let htmlStr_drawerName = "";
-ArrayObj.forEach((ele) =>{
-    if(ele.containerN[0] !== undefined){
-    htmlStr_drawerName += ` <p class="draw_nameP" data-drmenu="${ele.id}">Draw ${ele.containerN[0]}</p>`
-    }
-});
+// -----
 
-yourDraw__row1.innerHTML = htmlStr_drawerName;
+function drawOption() {
 
-// --
+    let htmlStr_drawerName = "";
+    ArrayObj.forEach((ele) => {
+        if (ele.containerN[0] !== undefined) {
+            htmlStr_drawerName += ` <p class="draw_nameP" data-drmenu="${ele.id}">Draw ${ele.containerN[0]}</p>`
+        }
+    });
 
-const draw_nameP = document.querySelectorAll('.draw_nameP');
-draw_nameP.forEach((itemDr)=>{
-    itemDr.addEventListener('click' , ()=>{
-        console.log(itemDr.dataset.drmenu)
+    yourDraw__row1.innerHTML = htmlStr_drawerName;
 
-    
-      let  htmlStr_drawoption = '';
-      let   htmlStr_li =''
 
-        ArrayObj.forEach((ele, id2) => {
-            ele.userItems.forEach((item) => {
-                if (ele.id == itemDr.dataset.drmenu) {
+    const draw_nameP = document.querySelectorAll('.draw_nameP');
+    draw_nameP.forEach((itemDr) => {
+        itemDr.addEventListener('click', () => {
+            console.log(itemDr.dataset.drmenu)
 
-                    htmlStr_li += `<li>${item.uItems}</li>` 
 
-                    htmlStr_drawoption = `<div class="containersInfo" data-cninf="${id2}">
+            let htmlStr_drawoption = '';
+            let htmlStr_li = ''
+
+            ArrayObj.forEach((ele, id2) => {
+                ele.userItems.forEach((item) => {
+                    if (ele.id == itemDr.dataset.drmenu) {
+
+                        htmlStr_li += `<li>${item.uItems}</li>`
+
+                        htmlStr_drawoption = `<div class="containersInfo" data-cninf="${id2}">
                     <h2>Draw ${ele.containerN[0]}</h2>
                      <ul class="items_render">
                         ${htmlStr_li}
                      </ul>
-                     </div>` 
-
-                   
+                     </div>`
 
 
-                }
 
+
+                    }
+
+                })
             })
+
+            box.innerHTML = htmlStr_drawoption;
+
+
+
+
         })
-
-        box.innerHTML  = htmlStr_drawoption;
-
-
-
-
     })
-})
+
+}
+
+drawOption();
