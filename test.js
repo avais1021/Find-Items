@@ -106,12 +106,14 @@ function renderItemsCard() {
     var htmlStr3 = '';
 
     ArrayObj.forEach((ele, id2) => {
-        htmlStr2 += `
-        <div class="containersInfo" data-cninf="${id2}">
-        <h2>Draw ${ele.containerN[0]}</h2>
+        if (ele.containerN[0] !== undefined) {
+            htmlStr2 += `
+         <div class="containersInfo" data-cninf="${id2}">
+         <h2>Draw ${ele.containerN[0]}</h2>
          <ul class="items_render"></ul>
          </div>
         `
+        }
     })
 
     box.innerHTML = htmlStr2;
@@ -135,19 +137,32 @@ function renderItemsCard() {
 }
 
 //Search Input
+
+// search_input.addEventListener('keypress' , (e)=>{
+//     console.log(e)
+//     // if(e.keyCode == 32){
+//         return (
+//             e.charCode != 32
+//         )
+//     // }
+// })
+
 search_input.addEventListener('keyup', (e) => {
     let serach_drwa = '';
 
-    console.log('input val', e.target.value)
+    // console.log('input val', e.target.value)
+    
     ArrayObj.forEach((ele, id2) => {
         ele.userItems.forEach((item) => {
             // if (e.target.value.includes(item.uItems)) {
-            if (item.uItems.includes(e.target.value) || ele.containerN[0].includes(e.target.value)  && e.target.value !== '') {
+            // if ((item.uItems.includes(e.target.value) || ele.containerN[0].includes(e.target.value)) && e.target.value !== '') {
+            if ((item.uItems.indexOf(e.target.value) > -1 || ele.containerN[0].indexOf(e.target.value) > -1 ) && e.target.value !== '' ) {
 
-                console.log('draw name', ele.containerN[0])
-                console.log('item.uItems', item.uItems)
+                // console.log('draw name', ele.containerN[0])
+                // console.log('item.uItems', item.uItems)
+                
 
-                serach_drwa = `
+                serach_drwa += `
              <div class="containersInfo" data-cninf="${id2}"  >
               <h2>Draw ${ele.containerN[0]}</h2>
               <ul class="items_render">
@@ -159,39 +174,42 @@ search_input.addEventListener('keyup', (e) => {
               </ul>
                   </div>
                `
-
-
             }
+            // else{
+            //     serach_drwa = '';
+            // }
 
         })
     })
 
+   
     box.innerHTML = serach_drwa;
+    
 
 
     let containersInfo = document.querySelector('.containersInfo');
     let allItem_render = document.querySelector('.allItem_render');
     let allItems = document.querySelector('#allItems');
-    allItems.addEventListener('click', () => {
-        htmlStr_allItem = '';
 
-        ArrayObj.forEach((ele, id2) => {
-            ele.userItems.forEach((item) => {
-                if (ele.id == containersInfo.dataset.cninf) {
+    if (allItems !== null) {
+        allItems.addEventListener('click', () => {
+            htmlStr_allItem = '';
 
-                    htmlStr_allItem += `<li>${item.uItems}</li>`
+            ArrayObj.forEach((ele, id2) => {
+                ele.userItems.forEach((item) => {
+                    if (ele.id == containersInfo.dataset.cninf) {
 
+                        htmlStr_allItem += `<li>${item.uItems}</li>`
 
+                    }
 
-
-                }
-
+                })
             })
+
+            allItem_render.innerHTML = htmlStr_allItem;
+
         })
-
-        allItem_render.innerHTML = htmlStr_allItem;
-
-    })
+    }
 
 
 
@@ -220,15 +238,19 @@ yourDraw__row.addEventListener('click', () => {
 
 function drawOption() {
 
+    // let htmlStr_AllShow = ''
     let htmlStr_drawerName = "";
     ArrayObj.forEach((ele) => {
         if (ele.containerN[0] !== undefined) {
-            htmlStr_drawerName += ` <p class="draw_nameP" data-drmenu="${ele.id}">Draw ${ele.containerN[0]}</p>`
+            htmlStr_drawerName += `   <p class="draw_nameP" data-drmenu="${ele.id}">Draw ${ele.containerN[0]}</p>`
         }
     });
 
-    yourDraw__row1.innerHTML = htmlStr_drawerName;
+    yourDraw__row1.innerHTML = `<p class="showAllDraw">show All Draws</p> ${htmlStr_drawerName}`;
 
+    if (yourDraw__row.classList.contains('open')) {
+        yourDraw__row1.style.height = (yourDraw__row1.scrollHeight) + 'px';
+    }
 
     const draw_nameP = document.querySelectorAll('.draw_nameP');
     draw_nameP.forEach((itemDr) => {
@@ -252,9 +274,6 @@ function drawOption() {
                      </ul>
                      </div>`
 
-
-
-
                     }
 
                 })
@@ -262,11 +281,14 @@ function drawOption() {
 
             box.innerHTML = htmlStr_drawoption;
 
-
-
-
         })
     })
+
+    let showAllDraw = document.querySelector('.showAllDraw');
+    showAllDraw.addEventListener('click', () => {
+        renderItemsCard();
+    })
+
 
 }
 

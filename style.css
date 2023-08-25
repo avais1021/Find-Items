@@ -175,6 +175,10 @@
     margin-bottom: 4px;
     cursor: pointer;
 }
+.showAllDraw{
+    color: green;
+    border: 1px solid;
+}
 
 @media screen and (max-width:420px){
     .search{
