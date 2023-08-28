@@ -150,39 +150,42 @@ function renderItemsCard() {
 search_input.addEventListener('keyup', (e) => {
     let serach_drwa = '';
 
+    if (e.target.value.trim() === "") {
+        serach_drwa = '';
+    } else{
+        ArrayObj.forEach((ele, id2) => {
+            ele.userItems.forEach((item) => {
+                // if (e.target.value.includes(item.uItems)) {
+                // if ((item.uItems.includes(e.target.value) || ele.containerN[0].includes(e.target.value)) && e.target.value !== '') {
+                 var eTargetVal =   e.target.value.toLowerCase()
+                 var userItemsItem =   item.uItems.toLowerCase()
+                 var containerN0 =   ele.containerN[0].toLowerCase()
+                if ((userItemsItem.indexOf(eTargetVal) > -1 || containerN0.indexOf(eTargetVal) > -1 ) && e.target.value !== '' ) {
+    
+                    // console.log('draw name', ele.containerN[0])
+                    // console.log('item.uItems', item.uItems)
+                    
+    
+                    serach_drwa += `
+                 <div class="containersInfo" data-cninf="${id2}"  >
+                  <h2>Draw ${ele.containerN[0]}</h2>
+                  <ul class="items_render">
+                    <li>${item.uItems}</li>
+                  </ul>
+                  <p id="allItems">All items <i class="fa-solid fa-angle-down"></i></p>
+                  <ul class="allItem_render">
+                
+                  </ul>
+                      </div>
+                   `
+                }
+                
+            })
+        })
+    }
+
     // console.log('input val', e.target.value)
     
-    ArrayObj.forEach((ele, id2) => {
-        ele.userItems.forEach((item) => {
-            // if (e.target.value.includes(item.uItems)) {
-            // if ((item.uItems.includes(e.target.value) || ele.containerN[0].includes(e.target.value)) && e.target.value !== '') {
-            if ((item.uItems.indexOf(e.target.value) > -1 || ele.containerN[0].indexOf(e.target.value) > -1 ) && e.target.value !== '' ) {
-
-                // console.log('draw name', ele.containerN[0])
-                // console.log('item.uItems', item.uItems)
-                
-
-                serach_drwa += `
-             <div class="containersInfo" data-cninf="${id2}"  >
-              <h2>Draw ${ele.containerN[0]}</h2>
-              <ul class="items_render">
-                <li>${item.uItems}</li>
-              </ul>
-              <p id="allItems">All items <i class="fa-solid fa-angle-down"></i></p>
-              <ul class="allItem_render">
-            
-              </ul>
-                  </div>
-               `
-            }
-            // else{
-            //     serach_drwa = '';
-            // }
-
-        })
-    })
-
-   
     box.innerHTML = serach_drwa;
     
 
