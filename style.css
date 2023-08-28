@@ -115,6 +115,7 @@
     color: #d6d6d6;
     padding: 8px 10px;
     width: 210px;
+    position: relative;
 }
 .containersInfo li{
     margin-left: 20px;
@@ -178,6 +179,12 @@
 .showAllDraw{
     color: green;
     border: 1px solid;
+}
+.fa-trash{
+    position: absolute;
+    right: 6px;
+    top: 6px;
+    cursor: pointer;
 }
 
 @media screen and (max-width:420px){
