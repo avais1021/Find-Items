@@ -324,7 +324,7 @@ function drawOption() {
 
 function deleteDrwa(e) {
     const deleteIconDataSet = e.target.getAttribute('data-drwdel')
-    alert(deleteIconDataSet)
+    // alert(deleteIconDataSet)
 
     ArrayObj.splice(deleteIconDataSet, 1)
     console.log(ArrayObj, 'delArr')
