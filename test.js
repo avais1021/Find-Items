@@ -22,14 +22,21 @@ addParent.addEventListener('click', () => {
         console.log(ArrayObj)
         localStorage.setItem('appdata', JSON.stringify(ArrayObj))
 
-        // console.log(counter, 'counter')
-        // save.dataset.sb = ArrayObj.length - 1;
+
         ArrayObj.forEach((ele) => {
             save.dataset.sb = ele.id;
         })
 
     } else {
         addItems.style.height = '0px'
+        ArrayObj.forEach((ele, idx) => {
+
+            if (ele.containerN.length == 0) {
+                ArrayObj.splice(idx)
+            }
+
+        })
+        localStorage.setItem('appdata', JSON.stringify(ArrayObj))
     }
 
 
@@ -179,9 +186,9 @@ search_input.addEventListener('keyup', (e) => {
                     // console.log('draw name', ele.containerN[0])
                     // console.log('item.uItems', item.uItems)
 
-                   
-                    
-                 searchDrLi = ` <li>${item.uItems}</li>`
+
+
+                    searchDrLi = ` <li>${item.uItems}</li>`
 
                     serach_drwa += `
                  <div class="containersInfo" data-cninf="${ele.id}"  >
@@ -214,40 +221,40 @@ search_input.addEventListener('keyup', (e) => {
     let allItems = document.querySelectorAll('#allItems');
     let allItem_render = document.querySelectorAll('.allItem_render');
 
-    
+
     if (allItems !== null) {
-        
+
         allItems.forEach((itembtn) => {
             itembtn.addEventListener('click', () => {
                 // let htmlStr_allItem = "";
                 itembtn.classList.toggle('open');
-               
+
                 // console.log(itembtn.dataset.allitem, 'itemBtndata')
                 ArrayObj.forEach((ele, id2) => {
                     ele.userItems.forEach((item) => {
 
-                        allItem_render.forEach((eleallrender)=>{
+                        allItem_render.forEach((eleallrender) => {
 
-                            
-                            
-                            if (ele.id == itembtn.dataset.allitem && ele.id == eleallrender.dataset.allrenderr  ) {
 
-                                if(itembtn.classList.contains('open')){
-                                eleallrender.innerHTML  += `<li>${item.uItems}</li>`
-                                }else{
+
+                            if (ele.id == itembtn.dataset.allitem && ele.id == eleallrender.dataset.allrenderr) {
+
+                                if (itembtn.classList.contains('open')) {
+                                    eleallrender.innerHTML += `<li>${item.uItems}</li>`
+                                } else {
                                     eleallrender.innerHTML = ""
                                 }
-                            }    
+                            }
 
                         })
-                        
+
                     })
                 })
             })
         })
 
-        
-    
+
+
     }
 
     const faTrash = document.querySelectorAll('.fa-trash')
@@ -333,6 +340,7 @@ function drawOption() {
 
                 button.addEventListener('click', deleteDrwa)
 
+
             })
         })
     })
@@ -351,14 +359,23 @@ function deleteDrwa(e) {
 
     ArrayObj.splice(deleteIconDataSet, 1)
     console.log(ArrayObj, 'delArr')
-
+    yourDraw__row1.style.height = 'auto';
     renderItemsCard()
+    drawOption()
     localStorage.setItem('appdata', JSON.stringify(ArrayObj))
 
 }
 
 drawOption();
 
+ArrayObj.forEach((ele, idx) => {
+
+    if (ele.containerN.length == 0) {
+        ArrayObj.splice(idx)
+    }
+
+})
+localStorage.setItem('appdata', JSON.stringify(ArrayObj))
 
 const newArr = [
     { id: 0, name: 'a' },
