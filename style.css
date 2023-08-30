@@ -186,6 +186,22 @@
     top: 6px;
     cursor: pointer;
 }
+.addMore {
+    margin-top: 2px;
+}
+.addMore input {
+    width: 157px;
+    outline: none;
+    border: none;
+    padding: 0 2px;
+}
+.addMore button {
+    border: none;
+    padding: 5px 8px;
+    border-radius: 40px;
+    font-weight: bold;
+    cursor: pointer;
+}
 
 @media screen and (max-width:420px){
     .search{

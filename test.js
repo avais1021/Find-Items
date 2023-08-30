@@ -121,6 +121,7 @@ function renderItemsCard() {
          <div class="containersInfo" data-cninf="${ele.id}">
          <i class="fa-solid fa-trash" data-drwdel="${id2}"></i>
          <h2>Draw ${ele.containerN[0]}</h2>
+         <div class="addMore"> <input type="text"> <button class="addmorebtn" data-addmrbtndata="${ele.id}"><i class="fa-solid fa-plus"></i></button></div>
          <ul class="items_render"></ul>
          </div>
         `
@@ -152,8 +153,66 @@ function renderItemsCard() {
 
     })
 
+    // ---
+    let addmorebtn = document.querySelectorAll('.addmorebtn');
+
+    addmorebtn.forEach((addmrbtn) => {
+        addmrbtn.addEventListener('click', funAddMrbtn)
+    })
+
+
 
 }
+// ---------------------------------------------
+function funAddMrbtn(e) {
+
+    let addMoreInput = e.target.closest('.addMore').querySelector('input').value;
+    let addmorebtn = e.target.closest('.addMore').querySelector('.addmorebtn');
+    console.log(addMoreInput)
+    console.log(addmorebtn.dataset.addmrbtndata, 'datasete')
+    ArrayObj.forEach((ele) => {
+
+        if (ele.id == addmorebtn.dataset.addmrbtndata) {
+            console.log('ifffffffff')
+            ele.userItems.push({ uItems: addMoreInput, uId: ele.id })
+        }
+
+    })
+    renderItemsCard()
+    
+    localStorage.setItem('appdata', JSON.stringify(ArrayObj))
+
+}
+function funAddMrbtn2(e) {
+
+    let addMoreInput = e.target.closest('.addMore').querySelector('input').value;
+    let addmorebtn = e.target.closest('.addMore').querySelector('.addmorebtn');
+    console.log(addMoreInput)
+    console.log(addmorebtn.dataset.addmrbtndata, 'datasete')
+    ArrayObj.forEach((ele) => {
+
+        if (ele.id == addmorebtn.dataset.addmrbtndata) {
+            console.log('ifffffffff')
+            ele.userItems.push({ uItems: addMoreInput, uId: ele.id })
+        }
+
+    })
+    drawOption()
+
+    const draw_nameP = document.querySelectorAll('.draw_nameP');
+    // draw_nameP[0].click();
+    draw_nameP.forEach((i1)=>{
+        if(i1.dataset.drmenu == addmorebtn.dataset.addmrbtndata ){
+            i1.click();
+        }
+    })
+    
+    localStorage.setItem('appdata', JSON.stringify(ArrayObj))
+
+}
+
+
+// --------------------------------------------------
 
 //Search Input
 
@@ -309,30 +368,33 @@ function drawOption() {
         itemDr.addEventListener('click', () => {
             console.log(itemDr.dataset.drmenu)
 
+           
+                let htmlStr_drawoption = '';
+                let htmlStr_li = ''
 
-            let htmlStr_drawoption = '';
-            let htmlStr_li = ''
+                ArrayObj.forEach((ele, id2) => {
+                    ele.userItems.forEach((item) => {
+                        if (ele.id == itemDr.dataset.drmenu) {
 
-            ArrayObj.forEach((ele, id2) => {
-                ele.userItems.forEach((item) => {
-                    if (ele.id == itemDr.dataset.drmenu) {
+                            htmlStr_li += `<li>${item.uItems}</li>`
 
-                        htmlStr_li += `<li>${item.uItems}</li>`
-
-                        htmlStr_drawoption = `<div class="containersInfo" data-cninf="${ele.id}">
+                            htmlStr_drawoption = `<div class="containersInfo" data-cninf="${ele.id}">
                         <i class="fa-solid fa-trash" data-drwdel="${id2}"></i>
                         <h2>Draw ${ele.containerN[0]}</h2>
+                        <div class="addMore"> <input type="text"> <button class="addmorebtn" data-addmrbtndata="${ele.id}"><i class="fa-solid fa-plus"></i></button></div>
                         <ul class="items_render">
                         ${htmlStr_li}
                         </ul>
                         </div>`
 
-                    }
+                        }
 
+                    })
                 })
-            })
 
-            box.innerHTML = htmlStr_drawoption;
+                box.innerHTML = htmlStr_drawoption;
+
+            
 
             const faTrash = document.querySelectorAll('.fa-trash')
             console.log(faTrash)
@@ -342,6 +404,15 @@ function drawOption() {
 
 
             })
+
+            // ---
+            let addmorebtn = document.querySelectorAll('.addmorebtn');
+
+            addmorebtn.forEach((addmrbtn) => {
+                // addmrbtn.addEventListener('click', funAddMrbtn)
+                addmrbtn.addEventListener('click', funAddMrbtn2)
+            })
+
         })
     })
 
