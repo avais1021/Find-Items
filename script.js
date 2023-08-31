@@ -179,7 +179,7 @@ function funAddMrbtn(e) {
 
     })
     renderItemsCard()
-    
+
     localStorage.setItem('appdata', JSON.stringify(ArrayObj))
 
 }
@@ -201,13 +201,52 @@ function funAddMrbtn2(e) {
 
     const draw_nameP = document.querySelectorAll('.draw_nameP');
     // draw_nameP[0].click();
-    draw_nameP.forEach((i1)=>{
-        if(i1.dataset.drmenu == addmorebtn.dataset.addmrbtndata ){
+    draw_nameP.forEach((i1) => {
+        if (i1.dataset.drmenu == addmorebtn.dataset.addmrbtndata) {
             i1.click();
         }
     })
+
+    localStorage.setItem('appdata', JSON.stringify(ArrayObj))
+
+}
+function funAddMrbtn3(e) {
+
+    let addMoreInput = e.target.closest('.addMore').querySelector('input').value;
+    let addmorebtn = e.target.closest('.addMore').querySelector('.addmorebtn');
+    let allItems = e.target.closest('.containersInfo').querySelector('#allItems');
+    let allItem_render = e.target.closest('.containersInfo').querySelector('.allItem_render');
+    console.log(addMoreInput)
+    console.log(addmorebtn.dataset.addmrbtndata, 'datasete')
+
+    let htmlStrfun3allItem = "";
+    allItem_render.innerHTML = "";
+
+    ArrayObj.forEach((ele) => {
+
+        if (ele.id == addmorebtn.dataset.addmrbtndata) {
+            console.log('ifffffffff')
+            ele.userItems.push({ uItems: addMoreInput, uId: ele.id })
+
+
+            ele.userItems.forEach((item) => {
+                // allItem_render.innerHTML +=`<li>${item.uItems}</li>`
+                htmlStrfun3allItem += `<li>${item.uItems}</li>`
+            })
+
+        }
+
+    })
+
+    allItem_render.innerHTML = htmlStrfun3allItem;
+
     
     localStorage.setItem('appdata', JSON.stringify(ArrayObj))
+
+    // allItems.click();
+    allItems.classList.add('open')
+
+
 
 }
 
@@ -256,6 +295,7 @@ search_input.addEventListener('keyup', (e) => {
                   <ul class="items_render">
                     ${searchDrLi}
                   </ul>
+                  <div class="addMore"> <input type="text"> <button class="addmorebtn" data-addmrbtndata="${ele.id}"><i class="fa-solid fa-plus"></i></button></div>
                   <p id="allItems" data-allitem="${ele.id}">All items <i class="fa-solid fa-angle-down"></i></p>
                   <ul class="allItem_render" data-allrenderr="${ele.id}">
                 
@@ -284,7 +324,10 @@ search_input.addEventListener('keyup', (e) => {
     if (allItems !== null) {
 
         allItems.forEach((itembtn) => {
-            itembtn.addEventListener('click', () => {
+            itembtn.addEventListener('click', (e) => {
+
+                let allItem_renderSecond = e.target.closest('.containersInfo').querySelector('.allItem_render');
+                allItem_renderSecond.innerHTML = "";
                 // let htmlStr_allItem = "";
                 itembtn.classList.toggle('open');
 
@@ -322,6 +365,13 @@ search_input.addEventListener('keyup', (e) => {
 
         button.addEventListener('click', deleteDrwa)
 
+    })
+
+    // ---
+    let addmorebtn = document.querySelectorAll('.addmorebtn');
+
+    addmorebtn.forEach((addmrbtn) => {
+        addmrbtn.addEventListener('click', funAddMrbtn3)
     })
 
 })
@@ -365,20 +415,19 @@ function drawOption() {
 
     const draw_nameP = document.querySelectorAll('.draw_nameP');
     draw_nameP.forEach((itemDr) => {
-        itemDr.addEventListener('click', () => {
+        itemDr.addEventListener('click', (e) => {
             console.log(itemDr.dataset.drmenu)
+          
+            let htmlStr_drawoption = '';
+            let htmlStr_li = ''
 
-           
-                let htmlStr_drawoption = '';
-                let htmlStr_li = ''
+            ArrayObj.forEach((ele, id2) => {
+                ele.userItems.forEach((item) => {
+                    if (ele.id == itemDr.dataset.drmenu) {
 
-                ArrayObj.forEach((ele, id2) => {
-                    ele.userItems.forEach((item) => {
-                        if (ele.id == itemDr.dataset.drmenu) {
+                        htmlStr_li += `<li>${item.uItems}</li>`
 
-                            htmlStr_li += `<li>${item.uItems}</li>`
-
-                            htmlStr_drawoption = `<div class="containersInfo" data-cninf="${ele.id}">
+                        htmlStr_drawoption = `<div class="containersInfo" data-cninf="${ele.id}">
                         <i class="fa-solid fa-trash" data-drwdel="${id2}"></i>
                         <h2>Draw ${ele.containerN[0]}</h2>
                         <div class="addMore"> <input type="text"> <button class="addmorebtn" data-addmrbtndata="${ele.id}"><i class="fa-solid fa-plus"></i></button></div>
@@ -387,14 +436,15 @@ function drawOption() {
                         </ul>
                         </div>`
 
-                        }
+                    }
 
-                    })
                 })
+            })
 
-                box.innerHTML = htmlStr_drawoption;
+            box.innerHTML = htmlStr_drawoption;
 
-            
+
+
 
             const faTrash = document.querySelectorAll('.fa-trash')
             console.log(faTrash)
