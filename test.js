@@ -234,7 +234,11 @@ search_input.addEventListener('keyup', (e) => {
     } else {
 
         ArrayObj.forEach((ele, id2) => {
-            ele.userItems.forEach((item) => {
+            const filteredData = Object.values(ele.userItems.reduce((acc, item) => {
+                acc[item.uId] = item;
+                return acc;
+            }, {}));
+            filteredData.forEach((item) => {
                 // if (e.target.value.includes(item.uItems)) {
                 // if ((item.uItems.includes(e.target.value) || ele.containerN[0].includes(e.target.value)) && e.target.value !== '') {
                 var eTargetVal = e.target.value.toLowerCase()
