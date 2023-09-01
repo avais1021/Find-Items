@@ -142,10 +142,10 @@ function renderItemsCard() {
         console.log('eleCnt', eleCnt.dataset.cninf)
         var items_render = eleCnt.querySelector('.items_render')
 
-        ArrayObj.forEach((ele2, id2) => {
-            ele2.userItems.forEach((item) => {
+        ArrayObj.forEach((ele2) => {
+            ele2.userItems.forEach((item, idx) => {
                 if (item.uId == eleCnt.dataset.cninf) {
-                    items_render.innerHTML += `<li>${item.uItems}   <i class="fa-solid fa-trash" data-drwItemdel="${id2}"></i> </li>`;
+                    items_render.innerHTML += `<li>${item.uItems}   <i class="fa-solid fa-trash drwItem" data-drwItemdel="${idx}"></i> </li>`;
                 }
             })
         })
@@ -158,6 +158,12 @@ function renderItemsCard() {
 
         button.addEventListener('click', deleteDrwa)
 
+    })
+
+    // --
+    const drawItemTrash = document.querySelectorAll('.fa-trash.drwItem');
+    drawItemTrash.forEach((itemTrashBtn) => {
+        itemTrashBtn.addEventListener('click', deleteDrwItems)
     })
 
     // ---
@@ -229,16 +235,16 @@ function funAddMrbtn3(e) {
     let htmlStrfun3allItem = "";
     allItem_render.innerHTML = "";
 
-    ArrayObj.forEach((ele, id2) => {
+    ArrayObj.forEach((ele) => {
 
         if (ele.id == addmorebtn.dataset.addmrbtndata) {
             console.log('ifffffffff')
             ele.userItems.push({ uItems: addMoreInput, uId: ele.id })
 
 
-            ele.userItems.forEach((item) => {
+            ele.userItems.forEach((item, idx) => {
                 // allItem_render.innerHTML +=`<li>${item.uItems}</li>`
-                htmlStrfun3allItem += `<li>${item.uItems} <i class="fa-solid fa-trash" data-drwItemdel="${id2}"></i> </li>`
+                htmlStrfun3allItem += `<li>${item.uItems} <i class="fa-solid fa-trash drwItem" data-drwItemdel="${idx}"></i> </li>`
             })
 
         }
@@ -246,6 +252,12 @@ function funAddMrbtn3(e) {
     })
 
     allItem_render.innerHTML = htmlStrfun3allItem;
+
+    // --
+    const drawItemTrash = document.querySelectorAll('.fa-trash.drwItem');
+    drawItemTrash.forEach((itemTrashBtn) => {
+        itemTrashBtn.addEventListener('click', deleteDrwItems)
+    })
 
 
     localStorage.setItem('appdata', JSON.stringify(ArrayObj))
@@ -280,7 +292,7 @@ search_input.addEventListener('keyup', (e) => {
     } else {
 
         ArrayObj.forEach((ele, id2) => {
-            ele.userItems.forEach((item) => {
+            ele.userItems.forEach((item, idx) => {
                 // if (e.target.value.includes(item.uItems)) {
                 // if ((item.uItems.includes(e.target.value) || ele.containerN[0].includes(e.target.value)) && e.target.value !== '') {
                 var eTargetVal = e.target.value.toLowerCase()
@@ -293,7 +305,7 @@ search_input.addEventListener('keyup', (e) => {
 
 
 
-                    searchDrLi = ` <li>${item.uItems} <i class="fa-solid fa-trash" data-drwItemdel="${id2}"></i> </li>`
+                    searchDrLi = ` <li>${item.uItems} <i class="fa-solid fa-trash drwItem" data-drwItemdel="${idx}"></i> </li>`
 
                     serach_drwa += `
                  <div class="containersInfo" data-cninf="${ele.id}"  >
@@ -339,8 +351,8 @@ search_input.addEventListener('keyup', (e) => {
                 itembtn.classList.toggle('open');
 
                 // console.log(itembtn.dataset.allitem, 'itemBtndata')
-                ArrayObj.forEach((ele, id2) => {
-                    ele.userItems.forEach((item) => {
+                ArrayObj.forEach((ele) => {
+                    ele.userItems.forEach((item, idx) => {
 
                         allItem_render.forEach((eleallrender) => {
 
@@ -349,7 +361,7 @@ search_input.addEventListener('keyup', (e) => {
                             if (ele.id == itembtn.dataset.allitem && ele.id == eleallrender.dataset.allrenderr) {
 
                                 if (itembtn.classList.contains('open')) {
-                                    eleallrender.innerHTML += `<li>${item.uItems} <i class="fa-solid fa-trash" data-drwItemdel="${id2}"></i> </li>`
+                                    eleallrender.innerHTML += `<li>${item.uItems} <i class="fa-solid fa-trash drwItem" data-drwItemdel="${idx}"></i> </li>`
                                 } else {
                                     eleallrender.innerHTML = ""
                                 }
@@ -359,6 +371,13 @@ search_input.addEventListener('keyup', (e) => {
 
                     })
                 })
+
+                // --
+                const drawItemTrash = document.querySelectorAll('.fa-trash.drwItem');
+                drawItemTrash.forEach((itemTrashBtn) => {
+                    itemTrashBtn.addEventListener('click', deleteDrwItems)
+                })
+
             })
         })
 
@@ -372,6 +391,12 @@ search_input.addEventListener('keyup', (e) => {
 
         button.addEventListener('click', deleteDrwa)
 
+    })
+
+    // --
+    const drawItemTrash = document.querySelectorAll('.fa-trash.drwItem');
+    drawItemTrash.forEach((itemTrashBtn) => {
+        itemTrashBtn.addEventListener('click', deleteDrwItems)
     })
 
     // ---
@@ -429,10 +454,10 @@ function drawOption() {
             let htmlStr_li = ''
 
             ArrayObj.forEach((ele, id2) => {
-                ele.userItems.forEach((item) => {
+                ele.userItems.forEach((item, idx) => {
                     if (ele.id == itemDr.dataset.drmenu) {
 
-                        htmlStr_li += `<li>${item.uItems} <i class="fa-solid fa-trash" data-drwItemdel="${id2}"></i> </li>`
+                        htmlStr_li += `<li>${item.uItems} <i class="fa-solid fa-trash drwItem" data-drwItemdel="${idx}"></i> </li>`
 
                         htmlStr_drawoption = `<div class="containersInfo" data-cninf="${ele.id}">
                         <i class="fa-solid fa-trash draww" data-drwdel="${id2}"></i>
@@ -459,7 +484,12 @@ function drawOption() {
 
                 button.addEventListener('click', deleteDrwa)
 
+            })
 
+            // --
+            const drawItemTrash = document.querySelectorAll('.fa-trash.drwItem');
+            drawItemTrash.forEach((itemTrashBtn) => {
+                itemTrashBtn.addEventListener('click', deleteDrwItems)
             })
 
             // ---
@@ -488,6 +518,28 @@ function deleteDrwa(e) {
     ArrayObj.splice(deleteIconDataSet, 1)
     console.log(ArrayObj, 'delArr')
     yourDraw__row1.style.height = 'auto';
+    renderItemsCard()
+    drawOption()
+    localStorage.setItem('appdata', JSON.stringify(ArrayObj))
+
+}
+
+function deleteDrwItems(e) {
+    let deleteItemSataSet = e.target.getAttribute('data-drwitemdel');
+    let carContainersInfo = e.target.closest('.containersInfo');
+
+
+    ArrayObj.forEach((ele) => {
+
+        ele.userItems.forEach((item) => {
+
+            if (ele.id == item.uId && carContainersInfo.dataset.cninf == ele.id) {
+                ele.userItems.splice(deleteItemSataSet, 1)
+            }
+
+        })
+    })
+
     renderItemsCard()
     drawOption()
     localStorage.setItem('appdata', JSON.stringify(ArrayObj))
