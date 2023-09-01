@@ -119,7 +119,13 @@
 }
 .containersInfo li{
     margin-left: 20px;
-    margin-bottom: 4px;
+    margin-bottom: 5px;
+    position: relative;
+    box-shadow: 0 0 6px white;
+}
+li i.fa-solid.fa-trash {
+    font-size: 13px;
+    top: 3px;
 }
 .containersInfo .items_render{
     margin-top: 7px;
