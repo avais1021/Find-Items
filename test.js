@@ -44,6 +44,14 @@ addParent.addEventListener('click', () => {
 
         })
         localStorage.setItem('appdata', JSON.stringify(ArrayObj))
+
+        save.style.display = "none";
+    }
+
+    if(htmlitems.innerText !== '' && addParent.classList.contains('open') ){
+        setTimeout(() => {
+            save.style.display = "block";
+        }, 1000) 
     }
 
 
