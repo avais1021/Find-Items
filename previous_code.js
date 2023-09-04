@@ -48,10 +48,10 @@ addParent.addEventListener('click', () => {
         save.style.display = "none";
     }
 
-    if (htmlitems.innerText !== '' && addParent.classList.contains('open')) {
+    if(htmlitems.innerText !== '' && addParent.classList.contains('open') ){
         setTimeout(() => {
             save.style.display = "block";
-        }, 1000)
+        }, 1000) 
     }
 
 
@@ -291,20 +291,11 @@ function funAddMrbtn3(e) {
 //     // }
 // })
 
-
 search_input.addEventListener('keyup', (e) => {
-
-    Search()
-
-
-})
-
-function Search() {
-
     let serach_drwa = '';
     let searchDrLi = ''
 
-    if (search_input.value.trim() === "") {
+    if (e.target.value.trim() === "") {
         serach_drwa = '';
     } else {
 
@@ -312,11 +303,10 @@ function Search() {
             ele.userItems.forEach((item, idx) => {
                 // if (e.target.value.includes(item.uItems)) {
                 // if ((item.uItems.includes(e.target.value) || ele.containerN[0].includes(e.target.value)) && e.target.value !== '') {
-                var eTargetVal = search_input.value.toLowerCase();
-                // var eTargetVal = e.target.value.toLowerCase()
+                var eTargetVal = e.target.value.toLowerCase()
                 var userItemsItem = item.uItems.toLowerCase()
                 var containerN0 = ele.containerN[0].toLowerCase()
-                if ((userItemsItem.indexOf(eTargetVal) > -1 || containerN0.indexOf(eTargetVal) > -1) && search_input.value !== '') {
+                if ((userItemsItem.indexOf(eTargetVal) > -1 || containerN0.indexOf(eTargetVal) > -1) && e.target.value !== '') {
 
                     // console.log('draw name', ele.containerN[0])
                     // console.log('item.uItems', item.uItems)
@@ -326,19 +316,19 @@ function Search() {
                     searchDrLi = ` <li>${item.uItems} <i class="fa-solid fa-trash drwItem" data-drwItemdel="${idx}"></i> </li>`
 
                     serach_drwa += `
-             <div class="containersInfo" data-cninf="${ele.id}"  >
-             <i class="fa-solid fa-trash draww" data-drwdel="${id2}"></i>
-              <h2>Draw ${ele.containerN[0]}</h2>
-              <ul class="items_render">
-                ${searchDrLi}
-              </ul>
-              <div class="addMore"> <input type="text"> <button class="addmorebtn" data-addmrbtndata="${ele.id}"><i class="fa-solid fa-plus"></i></button></div>
-              <p id="allItems" data-allitem="${ele.id}">All items <i class="fa-solid fa-angle-down"></i></p>
-              <ul class="allItem_render" data-allrenderr="${ele.id}">
-            
-              </ul>
-                  </div>
-               `
+                 <div class="containersInfo" data-cninf="${ele.id}"  >
+                 <i class="fa-solid fa-trash draww" data-drwdel="${id2}"></i>
+                  <h2>Draw ${ele.containerN[0]}</h2>
+                  <ul class="items_render">
+                    ${searchDrLi}
+                  </ul>
+                  <div class="addMore"> <input type="text"> <button class="addmorebtn" data-addmrbtndata="${ele.id}"><i class="fa-solid fa-plus"></i></button></div>
+                  <p id="allItems" data-allitem="${ele.id}">All items <i class="fa-solid fa-angle-down"></i></p>
+                  <ul class="allItem_render" data-allrenderr="${ele.id}">
+                
+                  </ul>
+                      </div>
+                   `
 
 
                 }
@@ -393,7 +383,7 @@ function Search() {
                 // --
                 const drawItemTrash = document.querySelectorAll('.fa-trash.drwItem');
                 drawItemTrash.forEach((itemTrashBtn) => {
-                    itemTrashBtn.addEventListener('click', deleteDrwItems2)
+                    itemTrashBtn.addEventListener('click', deleteDrwItems)
                 })
 
             })
@@ -414,7 +404,7 @@ function Search() {
     // --
     const drawItemTrash = document.querySelectorAll('.fa-trash.drwItem');
     drawItemTrash.forEach((itemTrashBtn) => {
-        itemTrashBtn.addEventListener('click', deleteDrwItems2)
+        itemTrashBtn.addEventListener('click', deleteDrwItems)
     })
 
     // ---
@@ -424,10 +414,7 @@ function Search() {
         addmrbtn.addEventListener('click', funAddMrbtn3)
     })
 
-}
-
-
-
+})
 
 // renderItemsCard()
 
@@ -490,22 +477,8 @@ function drawOption() {
                         </div>`
 
                     }
+
                 })
-            })
-
-            ArrayObj.forEach((ele, id2) => {
-
-                if (ele.id == itemDr.dataset.drmenu && ele.userItems.length == 0) {
-                    htmlStr_drawoption = `<div class="containersInfo" data-cninf="${ele.id}">
-                        <i class="fa-solid fa-trash draww" data-drwdel="${id2}"></i>
-                        <h2>Draw ${ele.containerN[0]}</h2>
-                        <div class="addMore"> <input type="text"> <button class="addmorebtn" data-addmrbtndata="${ele.id}"><i class="fa-solid fa-plus"></i></button></div>
-                        <ul class="items_render">
-                       
-                        </ul>
-                        </div>`
-                }
-
             })
 
             box.innerHTML = htmlStr_drawoption;
@@ -562,15 +535,11 @@ function deleteDrwa(e) {
 function deleteDrwItems(e) {
     let deleteItemSataSet = e.target.getAttribute('data-drwitemdel');
     let carContainersInfo = e.target.closest('.containersInfo');
-    console.log(deleteItemSataSet, 'datasetouioui')
-    let items_render2 = e.target.closest('.items_render');
-    console.log(items_render2, 'render222')
-    let htmlStrItem_render2 = "";
 
 
     ArrayObj.forEach((ele) => {
 
-        ele.userItems.forEach((item, idx) => {
+        ele.userItems.forEach((item) => {
 
             if (ele.id == item.uId && carContainersInfo.dataset.cninf == ele.id && deleteItemSataSet == idx) {
                 ele.userItems.splice(deleteItemSataSet, 1);
@@ -580,55 +549,8 @@ function deleteDrwItems(e) {
         })
     })
 
-    // ----
-    ArrayObj.forEach((ele) => {
-        ele.userItems.forEach((item, idx) => {
-            if (ele.id == item.uId && carContainersInfo.dataset.cninf == ele.id) {
-                htmlStrItem_render2 += `<li>${item.uItems} <i class="fa-solid fa-trash drwItem" data-drwItemdel="${idx}"></i>`
-            }
-        })
-    })
-
-    items_render2.innerHTML = htmlStrItem_render2;
-
-    // --
-    const drawItemTrash = document.querySelectorAll('.fa-trash.drwItem');
-    drawItemTrash.forEach((itemTrashBtn) => {
-        itemTrashBtn.addEventListener('click', deleteDrwItems)
-    })
-
-    // drawOption()
-    // renderItemsCard()
-    localStorage.setItem('appdata', JSON.stringify(ArrayObj))
-
-}
-// ----------22--
-function deleteDrwItems2(e) {
-    let deleteItemSataSet = e.target.getAttribute('data-drwitemdel');
-    let carContainersInfo = e.target.closest('.containersInfo');
-    console.log(deleteItemSataSet, 'datasetouioui')
-    // let items_render2 = e.target.closest('.items_render');
-    // console.log(items_render2,'render222')
-    // let htmlStrItem_render2 = "";
-
-
-    ArrayObj.forEach((ele) => {
-
-        ele.userItems.forEach((item, idx) => {
-
-            if (ele.id == item.uId && carContainersInfo.dataset.cninf == ele.id && deleteItemSataSet == idx) {
-                ele.userItems.splice(deleteItemSataSet, 1);
-
-            }
-
-        })
-    })
-
-
-
-    // drawOption()
-    // renderItemsCard()
-    Search();
+    renderItemsCard()
+    drawOption()
     localStorage.setItem('appdata', JSON.stringify(ArrayObj))
 
 }
