@@ -209,7 +209,14 @@ li i.fa-solid.fa-trash {
     font-weight: bold;
     cursor: pointer;
 }
-
+@media screen and (max-width:465px){
+    .containersInfo{
+        width: 80%;
+    }
+    .addMore input {
+        width: 80%;
+    }
+}
 @media screen and (max-width:420px){
     .search{
         width: 100%;
