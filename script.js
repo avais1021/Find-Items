@@ -266,7 +266,7 @@ function funAddMrbtn3(e) {
     // --
     const drawItemTrash = document.querySelectorAll('.fa-trash.drwItem');
     drawItemTrash.forEach((itemTrashBtn) => {
-        itemTrashBtn.addEventListener('click', deleteDrwItems)
+        itemTrashBtn.addEventListener('click', deleteDrwItems3)
     })
 
 
@@ -564,7 +564,7 @@ function deleteDrwItems(e) {
     let deleteItemSataSet = e.target.getAttribute('data-drwitemdel');
     let carContainersInfo = e.target.closest('.containersInfo');
     console.log(deleteItemSataSet, 'datasetouioui')
-    let items_render2 = e.target.closest('.items_render');
+    let items_render2 = e.target.closest('.containersInfo').querySelector('.items_render')
     console.log(items_render2, 'render222')
     let htmlStrItem_render2 = "";
 
@@ -669,6 +669,12 @@ function deleteDrwItems3 (e) {
     items_render2.innerHTML = htmlStrItem_render2;
 
     items_render1.innerHTML = "";
+
+     // --
+     const drawItemTrash = document.querySelectorAll('.fa-trash.drwItem');
+     drawItemTrash.forEach((itemTrashBtn) => {
+         itemTrashBtn.addEventListener('click', deleteDrwItems3)
+     })
 
    
     localStorage.setItem('appdata', JSON.stringify(ArrayObj))
