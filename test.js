@@ -392,7 +392,7 @@ function Search() {
                 // --
                 const drawItemTrash = document.querySelectorAll('.fa-trash.drwItem');
                 drawItemTrash.forEach((itemTrashBtn) => {
-                    itemTrashBtn.addEventListener('click', deleteDrwItems2)
+                    itemTrashBtn.addEventListener('click', deleteDrwItems3)
                 })
 
             })
@@ -628,6 +628,47 @@ function deleteDrwItems2(e) {
     // drawOption()
     // renderItemsCard()
     Search();
+    localStorage.setItem('appdata', JSON.stringify(ArrayObj))
+
+}
+
+function deleteDrwItems3 (e) {
+    let deleteItemSataSet = e.target.getAttribute('data-drwitemdel');
+    let carContainersInfo = e.target.closest('.containersInfo');
+    console.log(deleteItemSataSet, 'datasetouioui')
+    let items_render1 = e.target.closest('.containersInfo').querySelector('.items_render');
+    let items_render2 = e.target.closest('.containersInfo').querySelector('.allItem_render');
+    console.log(items_render2, 'renderAllAllAll')
+
+    let htmlStrItem_render2 = "";
+
+
+    ArrayObj.forEach((ele) => {
+
+        ele.userItems.forEach((item, idx) => {
+
+            if (ele.id == item.uId && carContainersInfo.dataset.cninf == ele.id && deleteItemSataSet == idx) {
+                ele.userItems.splice(deleteItemSataSet, 1);
+
+            }
+
+        })
+    })
+
+    // ----
+    ArrayObj.forEach((ele) => {
+        ele.userItems.forEach((item, idx) => {
+            if (ele.id == item.uId && carContainersInfo.dataset.cninf == ele.id) {
+                htmlStrItem_render2 += `<li>${item.uItems} <i class="fa-solid fa-trash drwItem" data-drwItemdel="${idx}"></i>`
+            }
+        })
+    })
+
+    items_render2.innerHTML = htmlStrItem_render2;
+
+    items_render1.innerHTML = "";
+
+   
     localStorage.setItem('appdata', JSON.stringify(ArrayObj))
 
 }
