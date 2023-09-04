@@ -89,6 +89,8 @@ addBtn.addEventListener('click', () => {
 
         localStorage.setItem('appdata', JSON.stringify(ArrayObj))
 
+        yourItems.value = "";
+
 
         setTimeout(() => {
             save.style.display = "block";
