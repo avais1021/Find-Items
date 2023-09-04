@@ -213,6 +213,9 @@ li i.fa-solid.fa-trash {
     .containersInfo{
         width: 80%;
     }
+    .box{
+        width: 100%;
+    }
     .addMore input {
         width: 80%;
     }
