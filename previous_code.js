@@ -48,10 +48,10 @@ addParent.addEventListener('click', () => {
         save.style.display = "none";
     }
 
-    if(htmlitems.innerText !== '' && addParent.classList.contains('open') ){
+    if (htmlitems.innerText !== '' && addParent.classList.contains('open')) {
         setTimeout(() => {
             save.style.display = "block";
-        }, 1000) 
+        }, 1000)
     }
 
 
@@ -89,6 +89,8 @@ addBtn.addEventListener('click', () => {
 
         localStorage.setItem('appdata', JSON.stringify(ArrayObj))
 
+        yourItems.value = "";
+
 
         setTimeout(() => {
             save.style.display = "block";
@@ -122,8 +124,11 @@ save.addEventListener('click', () => {
 
     localStorage.setItem('appdata', JSON.stringify(ArrayObj))
 
+    addParent.classList.remove('open')
 
 })
+
+// ----fun render card 
 
 function renderItemsCard() {
     console.log('one')
@@ -135,7 +140,7 @@ function renderItemsCard() {
             htmlStr2 += `
          <div class="containersInfo" data-cninf="${ele.id}">
          <i class="fa-solid fa-trash draww" data-drwdel="${id2}"></i>
-         <h2>Draw ${ele.containerN[0]}</h2>
+         <h2>Draw <span>${ele.containerN[0]}</span> <i class="fa-solid fa-pen-to-square edit_Draw" data-drwEdit="${id2}"> </i> </h2>
          <div class="addMore"> <input type="text"> <button class="addmorebtn" data-addmrbtndata="${ele.id}"><i class="fa-solid fa-plus"></i></button></div>
          <ul class="items_render"></ul>
          </div>
@@ -153,7 +158,7 @@ function renderItemsCard() {
         ArrayObj.forEach((ele2) => {
             ele2.userItems.forEach((item, idx) => {
                 if (item.uId == eleCnt.dataset.cninf) {
-                    items_render.innerHTML += `<li>${item.uItems}   <i class="fa-solid fa-trash drwItem" data-drwItemdel="${idx}"></i> </li>`;
+                    items_render.innerHTML += `<li>${item.uItems} <i class="fa-solid fa-pen-to-square edit_item" data-drwItemEdit="${idx}"> </i>   <i class="fa-solid fa-trash drwItem" data-drwItemdel="${idx}"></i> </li>`;
                 }
             })
         })
@@ -168,6 +173,15 @@ function renderItemsCard() {
 
     })
 
+    //--
+    const DrwNameEdit = document.querySelectorAll('.edit_Draw')
+    console.log(DrwNameEdit)
+    DrwNameEdit.forEach((item) => {
+
+        item.addEventListener('click', editDrwNamefun)
+
+    })
+
     // --
     const drawItemTrash = document.querySelectorAll('.fa-trash.drwItem');
     drawItemTrash.forEach((itemTrashBtn) => {
@@ -179,6 +193,13 @@ function renderItemsCard() {
 
     addmorebtn.forEach((addmrbtn) => {
         addmrbtn.addEventListener('click', funAddMrbtn)
+    })
+
+    // ---
+    let edit_item = document.querySelectorAll('.edit_item');
+
+    edit_item.forEach((item) => {
+        item.addEventListener('click', editItem)
     })
 
 
@@ -252,7 +273,7 @@ function funAddMrbtn3(e) {
 
             ele.userItems.forEach((item, idx) => {
                 // allItem_render.innerHTML +=`<li>${item.uItems}</li>`
-                htmlStrfun3allItem += `<li>${item.uItems} <i class="fa-solid fa-trash drwItem" data-drwItemdel="${idx}"></i> </li>`
+                htmlStrfun3allItem += `<li>${item.uItems} <i class="fa-solid fa-pen-to-square edit_item" data-drwItemEdit="${idx}"></i> <i class="fa-solid fa-trash drwItem" data-drwItemdel="${idx}"></i> </li>`
             })
 
         }
@@ -264,7 +285,14 @@ function funAddMrbtn3(e) {
     // --
     const drawItemTrash = document.querySelectorAll('.fa-trash.drwItem');
     drawItemTrash.forEach((itemTrashBtn) => {
-        itemTrashBtn.addEventListener('click', deleteDrwItems)
+        itemTrashBtn.addEventListener('click', deleteDrwItems3)
+    })
+
+    // ---
+    let edit_item = document.querySelectorAll('.edit_item');
+
+    edit_item.forEach((item) => {
+        item.addEventListener('click', editItem2)
     })
 
 
@@ -277,6 +305,67 @@ function funAddMrbtn3(e) {
 
 }
 
+function editItem(e) {
+
+    commonEditCode(e);
+
+    renderItemsCard();
+
+}
+function editItem2(e) {
+
+    commonEditCode(e);
+
+    renderingdeleteDrwItems3Li(e);
+
+}
+function editItem3(e) {
+
+    commonEditCode(e);
+
+    renderingEditDrwItems3LiSearch(e)
+
+}
+function editItem4(e) {
+    let containersInfo = e.target.closest('.containersInfo').getAttribute('data-cninf');
+    commonEditCode(e);
+
+    drawOption();
+
+    const draw_nameP = document.querySelectorAll('.draw_nameP');
+    // draw_nameP[0].click();
+    draw_nameP.forEach((i1) => {
+        if (i1.dataset.drmenu == containersInfo) {
+            i1.click();
+        }
+    })
+
+}
+
+function commonEditCode(e) {
+
+    const dataEditIcon = e.target.getAttribute('data-drwItemEdit');
+    const containerInfodata = e.target.closest('.containersInfo').getAttribute('data-cninf');
+    console.log(dataEditIcon, 'dataEditIcon')
+    console.log(containerInfodata, 'containerInfodata')
+
+    const updateItemeName = prompt('edit your Item')
+    console.log(updateItemeName)
+
+    ArrayObj.forEach((ele) => {
+        ele.userItems.forEach((item, idx) => {
+
+            if (updateItemeName !== null) {
+                if (ele.id == containerInfodata && dataEditIcon == idx) {
+                    item.uItems = updateItemeName;
+                }
+            }
+        })
+    })
+
+    localStorage.setItem('appdata', JSON.stringify(ArrayObj))
+
+}
 
 // --------------------------------------------------
 
@@ -291,44 +380,53 @@ function funAddMrbtn3(e) {
 //     // }
 // })
 
+
 search_input.addEventListener('keyup', (e) => {
+
+    Search()
+
+
+})
+
+function Search() {
+
     let serach_drwa = '';
     let searchDrLi = ''
 
-    if (e.target.value.trim() === "") {
+    if (search_input.value.trim() === "") {
         serach_drwa = '';
     } else {
 
         ArrayObj.forEach((ele, id2) => {
             ele.userItems.forEach((item, idx) => {
-                // if (e.target.value.includes(item.uItems)) {
-                // if ((item.uItems.includes(e.target.value) || ele.containerN[0].includes(e.target.value)) && e.target.value !== '') {
-                var eTargetVal = e.target.value.toLowerCase()
+
+                var eTargetVal = search_input.value.toLowerCase();
+                // var eTargetVal = e.target.value.toLowerCase()
                 var userItemsItem = item.uItems.toLowerCase()
                 var containerN0 = ele.containerN[0].toLowerCase()
-                if ((userItemsItem.indexOf(eTargetVal) > -1 || containerN0.indexOf(eTargetVal) > -1) && e.target.value !== '') {
+                if ((userItemsItem.indexOf(eTargetVal) > -1 || containerN0.indexOf(eTargetVal) > -1) && search_input.value !== '') {
 
                     // console.log('draw name', ele.containerN[0])
                     // console.log('item.uItems', item.uItems)
 
 
 
-                    searchDrLi = ` <li>${item.uItems} <i class="fa-solid fa-trash drwItem" data-drwItemdel="${idx}"></i> </li>`
+                    searchDrLi = ` <li>${item.uItems} <i class="fa-solid fa-pen-to-square edit_item" data-drwItemEdit="${idx}"></i>  <i class="fa-solid fa-trash drwItem" data-drwItemdel="${idx}"></i> </li>`
 
                     serach_drwa += `
-                 <div class="containersInfo" data-cninf="${ele.id}"  >
-                 <i class="fa-solid fa-trash draww" data-drwdel="${id2}"></i>
-                  <h2>Draw ${ele.containerN[0]}</h2>
-                  <ul class="items_render">
-                    ${searchDrLi}
-                  </ul>
-                  <div class="addMore"> <input type="text"> <button class="addmorebtn" data-addmrbtndata="${ele.id}"><i class="fa-solid fa-plus"></i></button></div>
-                  <p id="allItems" data-allitem="${ele.id}">All items <i class="fa-solid fa-angle-down"></i></p>
-                  <ul class="allItem_render" data-allrenderr="${ele.id}">
-                
-                  </ul>
-                      </div>
-                   `
+             <div class="containersInfo" data-cninf="${ele.id}">
+             <i class="fa-solid fa-trash draww" data-drwdel="${id2}"></i>
+             <h2>Draw <span>${ele.containerN[0]}</span> <i class="fa-solid fa-pen-to-square edit_Draw" data-drwEdit="${id2}"> </i> </h2>
+             <ul class="items_render">
+                ${searchDrLi}
+              </ul>
+              <div class="addMore"> <input type="text"> <button class="addmorebtn" data-addmrbtndata="${ele.id}"><i class="fa-solid fa-plus"></i></button></div>
+              <p id="allItems" data-allitem="${ele.id}">All items <i class="fa-solid fa-angle-down"></i></p>
+              <ul class="allItem_render" data-allrenderr="${ele.id}">
+            
+              </ul>
+                  </div>
+               `
 
 
                 }
@@ -369,7 +467,7 @@ search_input.addEventListener('keyup', (e) => {
                             if (ele.id == itembtn.dataset.allitem && ele.id == eleallrender.dataset.allrenderr) {
 
                                 if (itembtn.classList.contains('open')) {
-                                    eleallrender.innerHTML += `<li>${item.uItems} <i class="fa-solid fa-trash drwItem" data-drwItemdel="${idx}"></i> </li>`
+                                    eleallrender.innerHTML += `<li>${item.uItems} <i class="fa-solid fa-pen-to-square edit_item" data-drwItemEdit="${idx}"></i>  <i class="fa-solid fa-trash drwItem" data-drwItemdel="${idx}"></i> </li>`
                                 } else {
                                     eleallrender.innerHTML = ""
                                 }
@@ -383,7 +481,14 @@ search_input.addEventListener('keyup', (e) => {
                 // --
                 const drawItemTrash = document.querySelectorAll('.fa-trash.drwItem');
                 drawItemTrash.forEach((itemTrashBtn) => {
-                    itemTrashBtn.addEventListener('click', deleteDrwItems)
+                    itemTrashBtn.addEventListener('click', deleteDrwItems3)
+                })
+
+                // ---
+                let edit_item = document.querySelectorAll('.edit_item');
+
+                edit_item.forEach((item) => {
+                    item.addEventListener('click', editItem2)
                 })
 
             })
@@ -401,10 +506,26 @@ search_input.addEventListener('keyup', (e) => {
 
     })
 
+    //--
+    const DrwNameEdit = document.querySelectorAll('.edit_Draw')
+    console.log(DrwNameEdit)
+    DrwNameEdit.forEach((item) => {
+
+        item.addEventListener('click', editDrwNamefun)
+
+    })
+
     // --
     const drawItemTrash = document.querySelectorAll('.fa-trash.drwItem');
     drawItemTrash.forEach((itemTrashBtn) => {
-        itemTrashBtn.addEventListener('click', deleteDrwItems)
+        itemTrashBtn.addEventListener('click', deleteDrwItems2)
+    })
+
+    // ---
+    let edit_item = document.querySelectorAll('.edit_item');
+
+    edit_item.forEach((item) => {
+        item.addEventListener('click', editItem3)
     })
 
     // ---
@@ -414,7 +535,10 @@ search_input.addEventListener('keyup', (e) => {
         addmrbtn.addEventListener('click', funAddMrbtn3)
     })
 
-})
+}
+
+
+
 
 // renderItemsCard()
 
@@ -465,11 +589,11 @@ function drawOption() {
                 ele.userItems.forEach((item, idx) => {
                     if (ele.id == itemDr.dataset.drmenu) {
 
-                        htmlStr_li += `<li>${item.uItems} <i class="fa-solid fa-trash drwItem" data-drwItemdel="${idx}"></i> </li>`
+                        htmlStr_li += `<li>${item.uItems} <i class="fa-solid fa-pen-to-square edit_item" data-drwItemEdit="${idx}"> </i> <i class="fa-solid fa-trash drwItem" data-drwItemdel="${idx}"></i> </li>`
 
                         htmlStr_drawoption = `<div class="containersInfo" data-cninf="${ele.id}">
                         <i class="fa-solid fa-trash draww" data-drwdel="${id2}"></i>
-                        <h2>Draw ${ele.containerN[0]}</h2>
+                        <h2>Draw <span>${ele.containerN[0]}</span> <i class="fa-solid fa-pen-to-square edit_Draw" data-drwEdit="${id2}"> </i> </h2>
                         <div class="addMore"> <input type="text"> <button class="addmorebtn" data-addmrbtndata="${ele.id}"><i class="fa-solid fa-plus"></i></button></div>
                         <ul class="items_render">
                         ${htmlStr_li}
@@ -477,8 +601,22 @@ function drawOption() {
                         </div>`
 
                     }
-
                 })
+            })
+
+            ArrayObj.forEach((ele, id2) => {
+
+                if (ele.id == itemDr.dataset.drmenu && ele.userItems.length == 0) {
+                    htmlStr_drawoption = `<div class="containersInfo" data-cninf="${ele.id}">
+                        <i class="fa-solid fa-trash draww" data-drwdel="${id2}"></i>
+                        <h2>Draw <span>${ele.containerN[0]}</span> <i class="fa-solid fa-pen-to-square edit_Draw" data-drwEdit="${id2}"> </i> </h2>
+                        <div class="addMore"> <input type="text"> <button class="addmorebtn" data-addmrbtndata="${ele.id}"><i class="fa-solid fa-plus"></i></button></div>
+                        <ul class="items_render">
+                       
+                        </ul>
+                        </div>`
+                }
+
             })
 
             box.innerHTML = htmlStr_drawoption;
@@ -494,10 +632,26 @@ function drawOption() {
 
             })
 
+            //--
+            const DrwNameEdit = document.querySelectorAll('.edit_Draw')
+            console.log(DrwNameEdit)
+            DrwNameEdit.forEach((item) => {
+
+                item.addEventListener('click', editDrwNamefun)
+
+            })
+
             // --
             const drawItemTrash = document.querySelectorAll('.fa-trash.drwItem');
             drawItemTrash.forEach((itemTrashBtn) => {
                 itemTrashBtn.addEventListener('click', deleteDrwItems)
+            })
+
+            // ---
+            let edit_item = document.querySelectorAll('.edit_item');
+
+            edit_item.forEach((item) => {
+                item.addEventListener('click', editItem4)
             })
 
             // ---
@@ -532,14 +686,45 @@ function deleteDrwa(e) {
 
 }
 
+function editDrwNamefun (e) {
+    
+    // const dataEditIcon = e.target.getAttribute('data-drwItemEdit');
+    const containerInfodata = e.target.closest('.containersInfo').getAttribute('data-cninf');
+    const containerInfospan = e.target.closest('.containersInfo').querySelector('h2 span');
+    // console.log(dataEditIcon, 'dataEditIcon')
+    console.log(containerInfodata, 'containerInfodata')
+
+    const updateItemeName = prompt('edit your Draw name')
+    console.log(updateItemeName)
+
+    ArrayObj.forEach((ele) => {
+       
+
+            if (updateItemeName !== null) {
+                if (ele.id == containerInfodata ) {
+                    ele.containerN[0] = updateItemeName;
+                }
+            }
+        
+    })
+
+    containerInfospan.innerHTML = updateItemeName;
+
+    localStorage.setItem('appdata', JSON.stringify(ArrayObj))
+}
+
 function deleteDrwItems(e) {
     let deleteItemSataSet = e.target.getAttribute('data-drwitemdel');
     let carContainersInfo = e.target.closest('.containersInfo');
+    console.log(deleteItemSataSet, 'datasetouioui')
+    let items_render2 = e.target.closest('.containersInfo').querySelector('.items_render')
+    console.log(items_render2, 'render222')
+    let htmlStrItem_render2 = "";
 
 
     ArrayObj.forEach((ele) => {
 
-        ele.userItems.forEach((item) => {
+        ele.userItems.forEach((item, idx) => {
 
             if (ele.id == item.uId && carContainersInfo.dataset.cninf == ele.id && deleteItemSataSet == idx) {
                 ele.userItems.splice(deleteItemSataSet, 1);
@@ -549,9 +734,172 @@ function deleteDrwItems(e) {
         })
     })
 
-    renderItemsCard()
-    drawOption()
+    // ----
+    ArrayObj.forEach((ele) => {
+        ele.userItems.forEach((item, idx) => {
+            if (ele.id == item.uId && carContainersInfo.dataset.cninf == ele.id) {
+                htmlStrItem_render2 += `<li>${item.uItems} <i class="fa-solid fa-pen-to-square edit_item" data-drwItemEdit="${idx}"></i>  <i class="fa-solid fa-trash drwItem" data-drwItemdel="${idx}"></i>`
+            }
+        })
+    })
+
+    items_render2.innerHTML = htmlStrItem_render2;
+
+    // --
+    const drawItemTrash = document.querySelectorAll('.fa-trash.drwItem');
+    drawItemTrash.forEach((itemTrashBtn) => {
+        itemTrashBtn.addEventListener('click', deleteDrwItems)
+    })
+
+    // ---
+    let edit_item = document.querySelectorAll('.edit_item');
+
+    edit_item.forEach((item) => {
+        item.addEventListener('click', editItem4)
+    })
+
+    // drawOption()
+    // renderItemsCard()
     localStorage.setItem('appdata', JSON.stringify(ArrayObj))
+
+}
+// ----------22--
+function deleteDrwItems2(e) {
+    let deleteItemSataSet = e.target.getAttribute('data-drwitemdel');
+    let carContainersInfo = e.target.closest('.containersInfo');
+    console.log(deleteItemSataSet, 'datasetouioui')
+    // let items_render2 = e.target.closest('.items_render');
+    // console.log(items_render2,'render222')
+    // let htmlStrItem_render2 = "";
+
+
+    ArrayObj.forEach((ele) => {
+
+        ele.userItems.forEach((item, idx) => {
+
+            if (ele.id == item.uId && carContainersInfo.dataset.cninf == ele.id && deleteItemSataSet == idx) {
+                ele.userItems.splice(deleteItemSataSet, 1);
+
+            }
+
+        })
+    })
+
+
+
+    // drawOption()
+    // renderItemsCard()
+    Search();
+    localStorage.setItem('appdata', JSON.stringify(ArrayObj))
+
+}
+
+function deleteDrwItems3(e) {
+    let deleteItemSataSet = e.target.getAttribute('data-drwitemdel');
+    let carContainersInfo = e.target.closest('.containersInfo');
+    console.log(deleteItemSataSet, 'datasetouioui')
+
+
+
+
+    ArrayObj.forEach((ele) => {
+
+        ele.userItems.forEach((item, idx) => {
+
+            if (ele.id == item.uId && carContainersInfo.dataset.cninf == ele.id && deleteItemSataSet == idx) {
+                ele.userItems.splice(deleteItemSataSet, 1);
+
+            }
+
+        })
+    })
+
+    // ----
+
+
+    renderingdeleteDrwItems3Li(e);
+
+    // --
+    const drawItemTrash = document.querySelectorAll('.fa-trash.drwItem');
+    drawItemTrash.forEach((itemTrashBtn) => {
+        itemTrashBtn.addEventListener('click', deleteDrwItems3)
+    })
+
+    // ---
+    let edit_item = document.querySelectorAll('.edit_item');
+
+    edit_item.forEach((item) => {
+        item.addEventListener('click', editItem2)
+    })
+
+
+    localStorage.setItem('appdata', JSON.stringify(ArrayObj))
+
+}
+
+function renderingdeleteDrwItems3Li(e) {
+    let items_render1 = e.target.closest('.containersInfo').querySelector('.items_render');
+    let items_render2 = e.target.closest('.containersInfo').querySelector('.allItem_render');
+    let carContainersInfo = e.target.closest('.containersInfo');
+    console.log(items_render2, 'renderAllAllAll')
+
+    let htmlStrItem_render2 = "";
+
+    ArrayObj.forEach((ele) => {
+        ele.userItems.forEach((item, idx) => {
+            if (ele.id == item.uId && carContainersInfo.dataset.cninf == ele.id) {
+                htmlStrItem_render2 += `<li>${item.uItems} <i class="fa-solid fa-pen-to-square edit_item" data-drwItemEdit="${idx}"></i> <i class="fa-solid fa-trash drwItem" data-drwItemdel="${idx}"></i>`
+            }
+        })
+    })
+
+    items_render2.innerHTML = htmlStrItem_render2;
+
+    items_render1.innerHTML = "";
+}
+function renderingEditDrwItems3LiSearch(e) {
+    let items_render1 = e.target.closest('.containersInfo').querySelector('.items_render');
+    let items_render2 = e.target.closest('.containersInfo').querySelector('.allItem_render');
+    let carContainersInfo = e.target.closest('.containersInfo');
+    console.log(items_render2, 'renderAllAllAll')
+    const dataEditIcon = e.target.getAttribute('data-drwItemEdit');
+    const containerInfodata = e.target.closest('.containersInfo').getAttribute('data-cninf');
+
+    let htmlStrItem_render2 = "";
+    let htmlStrSearchTop = "";
+
+    ArrayObj.forEach((ele) => {
+        ele.userItems.forEach((item, idx) => {
+            // if (ele.id == item.uId && carContainersInfo.dataset.cninf == ele.id) {
+            if (ele.id == containerInfodata && dataEditIcon == idx) {
+                htmlStrSearchTop += `<li>${item.uItems} <i class="fa-solid fa-pen-to-square edit_item" data-drwItemEdit="${idx}"></i> <i class="fa-solid fa-trash drwItem" data-drwItemdel="${idx}"></i>`
+            }
+        })
+    })
+
+    ArrayObj.forEach((ele) => {
+        ele.userItems.forEach((item, idx) => {
+            if (ele.id == item.uId && carContainersInfo.dataset.cninf == ele.id) {
+                htmlStrItem_render2 += `<li>${item.uItems} <i class="fa-solid fa-pen-to-square edit_item" data-drwItemEdit="${idx}"></i> <i class="fa-solid fa-trash drwItem" data-drwItemdel="${idx}"></i>`
+            }
+        })
+    })
+
+    items_render1.innerHTML = htmlStrSearchTop;
+    items_render2.innerHTML = htmlStrItem_render2;
+
+    // ---
+    let edit_item = document.querySelectorAll('.edit_item');
+
+    edit_item.forEach((item) => {
+        item.addEventListener('click', editItem3)
+    })
+
+    // --
+    const drawItemTrash = document.querySelectorAll('.fa-trash.drwItem');
+    drawItemTrash.forEach((itemTrashBtn) => {
+        itemTrashBtn.addEventListener('click', deleteDrwItems2)
+    })
 
 }
 

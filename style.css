@@ -141,6 +141,15 @@ i.fa-solid.fa-pen-to-square {
 i.fa-solid.fa-pen-to-square:hover{
     color: rgb(111, 252, 111);
 }
+.containersInfo h2{
+    position: relative;
+    width: fit-content;
+}
+.containersInfo h2 i.fa-solid.fa-pen-to-square{
+    font-size: 17px;
+    right: -27px;
+    top: 5px;
+}
 .containersInfo .items_render{
     margin-top: 7px;
     font-size: 18px;
