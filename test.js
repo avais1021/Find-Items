@@ -128,6 +128,8 @@ save.addEventListener('click', () => {
 
 })
 
+// ----fun render card 
+
 function renderItemsCard() {
     console.log('one')
     var htmlStr2 = '';
