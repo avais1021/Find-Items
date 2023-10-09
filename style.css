@@ -20,6 +20,7 @@
 .search{
     margin-top: 40px;
     margin-bottom: 40px;
+    position: relative;
 }
 .search input{
     width: 400px;
@@ -44,6 +45,14 @@
     border: none;
     border-top-right-radius: 10px;
     border-bottom-left-radius: 10px;
+}
+i.fa-solid.fa-magnifying-glass {
+    position: absolute;
+    top: 7px;
+    right: 11px;
+    font-size: 20px;
+    color: white;
+    cursor: pointer;
 }
 .dropdown{
     width: 350px;
